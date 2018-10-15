@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Artboard</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Social-icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard" fill="#377AFF" fill-rule="nonzero">
+            <g id="medium" transform="translate(0.000000, 4.000000)">
+                <path d="M43.9634824,45.3595608 L62.7235137,54.7378196 C62.7567686,54.7543843 62.7868863,54.7670588 62.8129882,54.777349 C62.8161255,54.7502431 62.8182588,54.7169882 62.8182588,54.6795922 L62.8182588,14.7191216 L43.9634824,45.3595608 Z" id="Shape"></path>
+                <polygon id="Shape" points="42.7836235 1.25389804 29.472502 22.790651 42.2738824 43.5950431 62.3196863 11.0214275"></polygon>
+                <polygon id="Shape" points="21.728502 34.2540549 39.0974745 42.937349 21.728502 14.7149804"></polygon>
+                <path d="M0.000250980392,44.5022118 C0.000250980392,44.7957333 0.288501961,45.2618039 0.55065098,45.3928157 L19.2700235,54.752502 C19.3044078,54.7690667 19.3345255,54.783749 19.360502,54.7920314 C19.3637647,54.7649255 19.3657725,54.7316706 19.3657725,54.694149 L19.3657725,11.2710275 L0.00125490196,1.58883137 L0.000250980392,44.5022118 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>
