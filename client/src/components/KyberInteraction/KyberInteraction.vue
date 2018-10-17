@@ -47,19 +47,19 @@ export default {
       ],
       myAddress: '',
       myContract: '',
-      kyberInterfaceContractAddress: '0xd657d826d0955efc2129e9347feca64764bba3dd', // use the latest contract address
-      kyberNetworkProxyContract : 0x7e6b8b9510D71BF8EF0f893902EbB9C865eEF4Df
+      kyberInterfaceContractAddress: '0x7b17381bf36d648352df287f21625a6b5601178a', // use the latest contract address
+      kyberNetworkProxyContract : '0x7e6b8b9510D71BF8EF0f893902EbB9C865eEF4Df'
     }),
     methods: {
         async initContract() {
             if(!this.isInitDone) {
-                var address = this.kyberInterfaceContractAddress
+                var kyberInterfaceContractAddress = this.kyberInterfaceContractAddress
                 var Web3 = require('web3')
                 web3 = new Web3(web3.currentProvider);
                 this.myAddress = web3.eth.accounts[0]
                 console.log(this.myAddress)
                 var MyContract = web3.eth.contract(abi)
-                this.myContract = MyContract.at(address)
+                this.myContract = MyContract.at(kyberInterfaceContractAddress)
                 this.isInitDone = true
             }
         },

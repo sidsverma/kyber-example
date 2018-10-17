@@ -9,8 +9,6 @@ import Vuetify from 'Vuetify'
 import VueMaterial from 'vue-material'
 import Rubik from 'i-rubik'
 import 'vue-material/dist/vue-material.css'
-window.$ = require('jquery')
-window.JQuery = require('jquery')
 
 import vuescroll from 'vue-scroll'
 //import Modal from './components/Home/FullScreenModal.vue'
