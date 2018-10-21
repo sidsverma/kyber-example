@@ -60,6 +60,31 @@ export default {
                 console.log(this.myAddress)
                 var MyContract = web3.eth.contract(abi)
                 this.myContract = MyContract.at(kyberInterfaceContractAddress)
+                let stringFromContract = this.myContract.StringEvent({toBlock: 'latest'});
+                stringFromContract.watch((error, result)=>{
+                if (!error) {
+                    console.log("StringEvent: " + result.args.text)
+                } else
+                    console.log("error")
+                })
+                let amountFromContract = this.myContract.destAmountEvent({toBlock: 'latest'});
+                amountFromContract.watch((error, result)=>{
+                if (!error) {
+                    console.log("destAmountEvent: " + result.args)
+                    var BigNumber = require('bignumber.js');
+                    console.log((new BigNumber(result.args.amount)).toNumber())
+                } else
+                    console.log("error")
+                })
+                let uintFromContract = this.myContract.uintEvent({toBlock: 'latest'});
+                uintFromContract.watch((error, result)=>{
+                if (!error) {
+                    console.log("uintEvent: " + result.args)
+                    var BigNumber = require('bignumber.js');
+                    console.log((new BigNumber(result.args.amount)).toNumber())
+                } else
+                    console.log("error")
+                })
                 this.isInitDone = true
             }
         },
@@ -70,7 +95,7 @@ export default {
             await this.initContract()
             var expectedRate;
             var slippageRate;
-            var srcTok = this.srcToken != ''? this.srcToken : this.KNC_ADDRESS
+            var srcTok = this.srcToken != ''? this.srcToken : this.ETH_ADDRESS
             var srcQty = this.srcQty != 0 ? this.srcQty : 1
             var dstTok = this.destToken != ''? this.destToken : this.OMG_ADDRESS
             this.myContract.getExpectedRate(this.kyberNetworkProxyContract, srcTok,
@@ -89,16 +114,30 @@ export default {
         },
         async swap() {
             await this.initContract()
-            var srcTok = this.srcToken != ''? this.srcToken : this.KNC_ADDRESS
-            var srcQty = this.srcQty != 0 ? this.srcQty : 1
-            var dstTok = this.destToken != ''? this.destToken : this.OMG_ADDRESS
+            var srcTok = this.srcToken != ''? this.srcToken : this.OMG_ADDRESS
+            var srcQty = this.srcQty != 0 ? this.srcQty : 0.01
+            var dstTok = this.destToken != ''? this.destToken : this.ETH_ADDRESS
             // why is this call not invoking a transfer of tokens call from metamask?
             this.myContract.swapTokenToToken(this.kyberNetworkProxyContract, srcTok,
-            web3.toWei(srcQty), dstTok, {from:this.myAddress, gas:26000}, function(err, returnedValue) {
+                web3.toWei(srcQty, "ether"), dstTok, {from:this.myAddress, gas:520000}, function(err, returnedValue) {
                     console.log(returnedValue)
-                    var BigNumber = require('bignumber.js');
-                    console.log((new BigNumber(returnedValue)).toNumber())
                 })
+
+
+
+
+            // this.myContract.swapTokenToEther(this.kyberNetworkProxyContract, srcTok,
+            //     web3.toWei(srcQty), dstTok, {from:this.myAddress, gas:520000}, function(err, returnedValue) {
+            //         console.log(returnedValue)
+            //         var BigNumber = require('bignumber.js');
+            //         console.log((new BigNumber(returnedValue)).toNumber())
+            //     })
+            // this.myContract.swapEtherToToken(this.kyberNetworkProxyContract, srcTok,
+            //     dstTok, {from:this.myAddress, gas:520000, value:web3.toWei(srcQty)}, function(err, returnedValue) {
+            //         console.log(returnedValue)
+            //         var BigNumber = require('bignumber.js');
+            //         console.log((new BigNumber(returnedValue)).toNumber())
+            //     })
         },
         clear: function() {
             this.srcQty = 0
