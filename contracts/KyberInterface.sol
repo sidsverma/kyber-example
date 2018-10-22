@@ -58,6 +58,10 @@ contract KyberInterface {
         return destAmount;
     }
 
+    function allowanceFunction(KyberNetworkProxyInterface _kyberNetworkProxy,
+        ERC20 srcToken, uint tokenQty) public {
+        srcToken.approve(address(_kyberNetworkProxy), tokenQty);
+    }
     //@param _kyberNetworkProxy kyberNetworkProxy contract address
     //@param token source token contract address
     //@param tokenQty token wei amount
@@ -75,12 +79,11 @@ contract KyberInterface {
         require(srcToken.approve(_kyberNetworkProxy, 0), "Failed setting allowance to 0.");
         // Approve tokens so network can take them during the swap
         srcToken.approve(address(_kyberNetworkProxy), tokenQty);
-        emit StringEvent("After taking approval for tokenQty in swapTokenToEther");
-        emit ERC20Event(srcToken);
-        emit uintEvent(tokenQty);
-        emit uintEvent(expectedRate);
+
+        // emit ERC20Event(srcToken);
+        // emit uintEvent(tokenQty);
+        // emit uintEvent(expectedRate);
         uint destAmount = _kyberNetworkProxy.swapTokenToEther(srcToken, tokenQty, expectedRate);
-        emit StringEvent("After swapTokenToEther in swapTokenToEther");
         
         return destAmount;
     }
@@ -91,5 +94,9 @@ contract KyberInterface {
         uint minRate;
         (expectedRate, minRate) = _kyberNetworkProxy.getExpectedRate(srcToken, destToken, srcQty);
         return (expectedRate, minRate);
+    }
+
+    // to directly send ether to contract
+    function() public payable {
     }
 }

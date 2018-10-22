@@ -119,6 +119,28 @@ const abi = [
       {
         "name": "tokenQty",
         "type": "uint256"
+      }
+    ],
+    "name": "allowanceFunction",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_kyberNetworkProxy",
+        "type": "address"
+      },
+      {
+        "name": "srcToken",
+        "type": "address"
+      },
+      {
+        "name": "tokenQty",
+        "type": "uint256"
       },
       {
         "name": "eth",

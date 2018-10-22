@@ -22,8 +22,10 @@
   </v-form>
 
     <v-btn @click="getRate">Get Rate</v-btn>
-    <v-btn color="success" @click="swap">Swap</v-btn>
-    <v-btn @click="clear">Clear</v-btn>
+    <v-btn @click="tokenToEther">token To Ether</v-btn>
+    <v-btn @click="etherToToken">ether To Token</v-btn>
+    <v-btn @click="tokenToToken">token To Token</v-btn>
+    <v-btn @click="allowance">Allowance</v-btn>
   </div>
 </template>
 <script>
@@ -47,7 +49,7 @@ export default {
       ],
       myAddress: '',
       myContract: '',
-      kyberInterfaceContractAddress: '0x7b17381bf36d648352df287f21625a6b5601178a', // use the latest contract address
+      kyberInterfaceContractAddress: '0x11ad05ca1c5c6343f1fa720279a2381c98e9b1b7', // use the latest contract address
       kyberNetworkProxyContract : '0x7e6b8b9510D71BF8EF0f893902EbB9C865eEF4Df'
     }),
     methods: {
@@ -110,39 +112,51 @@ export default {
                     console.log(expectedRate.toNumber())
                     console.log(slippageRate.toNumber())
                 }
+            })
+        },
+        async etherToToken() {
+            await this.initContract()
+            var srcTok = this.srcToken != ''? this.srcToken : this.ETH_ADDRESS
+            var srcQty = this.srcQty != 0 ? this.srcQty : 0.1
+            var dstTok = this.destToken != ''? this.destToken : this.OMG_ADDRESS
+
+            this.myContract.swapEtherToToken(this.kyberNetworkProxyContract, srcTok,
+                dstTok, {from:this.myAddress, value:web3.toWei(srcQty)}, function(err, returnedValue) {
+                console.log(returnedValue)
+            })
+        },
+        async tokenToEther() {
+            await this.initContract()
+            var srcTok = this.srcToken != ''? this.srcToken : this.ETH_ADDRESS
+            var srcQty = this.srcQty != 0 ? this.srcQty : 0.1
+            var dstTok = this.destToken != ''? this.destToken : this.OMG_ADDRESS
+
+            this.myContract.swapTokenToEther(this.kyberNetworkProxyContract, srcTok,
+                web3.toWei(srcQty), dstTok, {from:this.myAddress}, function(err, returnedValue) {
+                    console.log(returnedValue)
                 })
         },
-        async swap() {
+        async tokenToToken() {
+            await this.initContract()
+            var srcTok = this.srcToken != ''? this.srcToken : this.ETH_ADDRESS
+            var srcQty = this.srcQty != 0 ? this.srcQty : 0.1
+            var dstTok = this.destToken != ''? this.destToken : this.OMG_ADDRESS
+
+            this.myContract.swapTokenToToken(this.kyberNetworkProxyContract, srcTok,
+                web3.toWei(srcQty), dstTok, {from:this.myAddress}, function(err, returnedValue) {
+                    console.log(returnedValue)
+                })
+        },
+        async allowance() {
             await this.initContract()
             var srcTok = this.srcToken != ''? this.srcToken : this.OMG_ADDRESS
             var srcQty = this.srcQty != 0 ? this.srcQty : 0.01
-            var dstTok = this.destToken != ''? this.destToken : this.ETH_ADDRESS
-            // why is this call not invoking a transfer of tokens call from metamask?
-            this.myContract.swapTokenToToken(this.kyberNetworkProxyContract, srcTok,
-                web3.toWei(srcQty, "ether"), dstTok, {from:this.myAddress, gas:520000}, function(err, returnedValue) {
+            this.myContract.allowanceFunction(this.kyberNetworkProxyContract, srcTok, web3.toWei(srcQty),
+                {from:this.myAddress}, function(err, returnedValue) {
                     console.log(returnedValue)
+                    var BigNumber = require('bignumber.js');
+                    console.log((new BigNumber(returnedValue)).toNumber())
                 })
-
-
-
-
-            // this.myContract.swapTokenToEther(this.kyberNetworkProxyContract, srcTok,
-            //     web3.toWei(srcQty), dstTok, {from:this.myAddress, gas:520000}, function(err, returnedValue) {
-            //         console.log(returnedValue)
-            //         var BigNumber = require('bignumber.js');
-            //         console.log((new BigNumber(returnedValue)).toNumber())
-            //     })
-            // this.myContract.swapEtherToToken(this.kyberNetworkProxyContract, srcTok,
-            //     dstTok, {from:this.myAddress, gas:520000, value:web3.toWei(srcQty)}, function(err, returnedValue) {
-            //         console.log(returnedValue)
-            //         var BigNumber = require('bignumber.js');
-            //         console.log((new BigNumber(returnedValue)).toNumber())
-            //     })
-        },
-        clear: function() {
-            this.srcQty = 0
-            this.srcToken = ''
-            this.destToken = ''
         }
     }
 }
